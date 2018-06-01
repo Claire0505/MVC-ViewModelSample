@@ -1,0 +1,111 @@
+﻿@using PagedList
+@using PagedList.Mvc
+
+@*@model IEnumerable<MVC_ViewModelSample.Models.Products>*@
+@model PagedList.IPagedList<MVC_ViewModelSample.Models.Products>
+
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+@{
+    ViewBag.Title = "產品";
+}
+
+<h2></h2>
+
+<div class="form-group">
+    @using (Html.BeginForm("Index", "Products", FormMethod.Get))
+    {
+        <p>
+            @Html.Label("名稱 ")
+            @Html.TextBox("search", ViewBag.CurrentFilter as string)
+            @Html.DropDownList("categoryNameSearch", "ALL")
+            <input type="submit" value="Search" class="btn-default" />
+        </p>
+    }
+</div>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().ProductName)
+            @*@Html.ActionLink("ProductName", "Index", new { sortOrder = ViewBag.NameSortParm })*@
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().SupplierID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().QuantityPerUnit)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().UnitPrice)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().UnitsInStock)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().UnitsOnOrder)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().ReorderLevel)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().Discontinued)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().Categories.CategoryName)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SupplierID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.QuantityPerUnit)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UnitPrice)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UnitsInStock)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UnitsOnOrder)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReorderLevel)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Discontinued)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Categories.CategoryName)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.ProductID }) |
+                @Html.ActionLink("Details", "Details", new { id = item.ProductID }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.ProductID })
+            </td>
+        </tr>
+    }
+
+</table>
+@* =======加入分頁======== *@
+
+@*會顯示目前頁面和總頁數*@
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+
+@Html.PagedListPager((IPagedList)Model, page => Url.Action("Index",
+    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter,
+        currentFilterCategoryName = ViewBag.CurrentFilterCategory
+    }))

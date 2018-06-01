@@ -15,7 +15,6 @@ namespace MVC_ViewModelSample.Controllers
     {
         private NorthwindEntities db = new NorthwindEntities();
 
-        // GET: Products
         /// <summary>
         /// 產品列表
         /// </summary>
@@ -26,6 +25,7 @@ namespace MVC_ViewModelSample.Controllers
         /// <param name="currentFilter">當前搜尋的名稱</param>
         /// <param name="currentFilterCategoryName">當前的下拉選單分類</param>
         /// <returns>View(products.ToPagedList(pageNumber, pageSize=6))</returns>
+         // GET: Products
         public ActionResult Index(string search, string categoryNameSearch, string sortOrder,
             int? page, string currentFilter, string currentFilterCategoryName)
         {
